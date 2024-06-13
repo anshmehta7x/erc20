@@ -10,6 +10,11 @@ contract ERC20 {
     mapping (address => uint256) private balances;
     mapping (address => mapping (address => uint256)) private allowed;
 
+    function _mint(address _to, uint256 _value) internal {
+        require(_to != address(0));
+        totalSupply += _value;
+        balances[_to] += _value;
+    }
 
     function getName() public view returns(string memory){
         return name;
@@ -66,8 +71,7 @@ contract ERC20 {
         name = _name;
         symbol = _symbol;
         decimals = _decimals;
-        totalSupply = _totalSupply;
-        balances[msg.sender] = _totalSupply;
+        _mint(msg.sender, _totalSupply);
     }
 
 }
